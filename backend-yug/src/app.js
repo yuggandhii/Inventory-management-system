@@ -11,6 +11,9 @@ const db = require('./db');
 const authRoutes      = require('./modules/auth/routes');
 const productRoutes   = require('./modules/products/routes');
 const warehouseRoutes = require('./modules/warehouse/routes');
+const receiptRoutes   = require('./modules/receipts/routes');
+const deliveryRoutes  = require('./modules/deliveries/routes');
+const transferRoutes  = require('./modules/transfers/routes');
 
 const app = express();
 
@@ -25,6 +28,9 @@ app.use((req, res, next) => { logger.info(`${req.method} ${req.originalUrl}`); n
 app.use('/api/auth',       authLimiter, authRoutes);
 app.use('/api/products',   productRoutes);
 app.use('/api/warehouses', warehouseRoutes);
+app.use('/api/receipts',   receiptRoutes);
+app.use('/api/deliveries', deliveryRoutes);
+app.use('/api/transfers',  transferRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 app.use((req, res) => res.status(404).json({ error: 'Route not found.' }));

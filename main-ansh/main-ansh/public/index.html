@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMS – Inventory Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Login screen -->
+    <main class="screen screen-login" id="screen-login">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="logo">
+            <span class="logo-icon">◇</span>
+            <span class="logo-text">IMS</span>
+          </div>
+          <p class="login-tagline">Inventory Management System</p>
+        </div>
+        <form class="login-form" id="login-form">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+          </div>
+          <p class="form-error" id="login-error" aria-live="polite"></p>
+          <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Dashboard (after login) -->
+    <div class="screen screen-dashboard hidden" id="screen-dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <span class="logo-icon">◇</span>
+          <span class="logo-text">IMS</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item nav-item-active" data-view="dashboard">
+            <span class="nav-icon">▣</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-view="products">
+            <span class="nav-icon">▤</span>
+            <span>Products</span>
+          </a>
+          <a href="#" class="nav-item" data-view="operations">
+            <span class="nav-icon">▥</span>
+            <span>Operations</span>
+          </a>
+          <a href="#" class="nav-item" data-view="settings">
+            <span class="nav-icon">▦</span>
+            <span>Settings</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <span class="user-email" id="user-email">—</span>
+          </div>
+          <button type="button" class="btn btn-ghost btn-block" id="btn-logout">Log out</button>
+        </div>
+      </aside>
+      <div class="dashboard-main">
+        <!-- Dashboard view -->
+        <section class="view" id="view-dashboard">
+          <header class="dashboard-header">
+            <h1>Dashboard</h1>
+            <p class="dashboard-subtitle">Inventory snapshot</p>
+          </header>
+          <section class="kpi-grid" id="kpi-grid">
+            <article class="kpi-card">
+              <span class="kpi-value" id="kpi-total-stock">—</span>
+              <span class="kpi-label">Total in stock</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-value" id="kpi-product-types">—</span>
+              <span class="kpi-label">Product types</span>
+            </article>
+            <article class="kpi-card kpi-warn">
+              <span class="kpi-value" id="kpi-low-stock">—</span>
+              <span class="kpi-label">Low / out of stock</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-value" id="kpi-pending-receipts">—</span>
+              <span class="kpi-label">Pending receipts</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-value" id="kpi-pending-deliveries">—</span>
+              <span class="kpi-label">Pending deliveries</span>
+            </article>
+            <article class="kpi-card">
+              <span class="kpi-value" id="kpi-scheduled-transfers">—</span>
+              <span class="kpi-label">Scheduled transfers</span>
+            </article>
+          </section>
+        </section>
+
+        <!-- Products view -->
+        <section class="view hidden" id="view-products">
+          <header class="dashboard-header">
+            <h1>Products</h1>
+            <p class="dashboard-subtitle">Quick overview of items in stock</p>
+          </header>
+          <section class="section-card">
+            <div class="section-card-header">
+              <h2>Product list</h2>
+              <p>First 20 products with current stock.</p>
+            </div>
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>SKU</th>
+                    <th>Category</th>
+                    <th class="cell-right">Total stock</th>
+                  </tr>
+                </thead>
+                <tbody id="products-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- Operations view -->
+        <section class="view hidden" id="view-operations">
+          <header class="dashboard-header">
+            <h1>Operations</h1>
+            <p class="dashboard-subtitle">Recent receipts, deliveries, transfers, adjustments</p>
+          </header>
+          <section class="section-card">
+            <div class="section-card-header">
+              <h2>Recent operations</h2>
+              <p>Last 20 documents across all warehouses.</p>
+            </div>
+            <div class="table-wrapper">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Number</th>
+                    <th>Status</th>
+                    <th>Warehouse</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody id="operations-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- Settings view -->
+        <section class="view hidden" id="view-settings">
+          <header class="dashboard-header">
+            <h1>Settings</h1>
+            <p class="dashboard-subtitle">Warehouses & profile</p>
+          </header>
+          <div class="settings-grid">
+            <section class="section-card">
+              <div class="section-card-header">
+                <h2>Warehouses</h2>
+                <p>Locations where stock is stored.</p>
+              </div>
+              <div class="table-wrapper">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Code</th>
+                      <th class="cell-right">Locations</th>
+                    </tr>
+                  </thead>
+                  <tbody id="settings-warehouses-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="section-card">
+              <div class="section-card-header">
+                <h2>My profile</h2>
+                <p>Your account inside IMS.</p>
+              </div>
+              <div class="profile-summary">
+                <div><span class="label">Email</span><span id="settings-email">—</span></div>
+                <div><span class="label">Role</span><span id="settings-role">—</span></div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="/js/app.js"></script>
+</body>
+</html>

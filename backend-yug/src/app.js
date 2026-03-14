@@ -8,12 +8,16 @@ const logger = require('./utils/logger');
 const errorHandler = require('./middleware/errorHandler');
 const db = require('./db');
 
-const authRoutes      = require('./modules/auth/routes');
-const productRoutes   = require('./modules/products/routes');
-const warehouseRoutes = require('./modules/warehouse/routes');
-const receiptRoutes   = require('./modules/receipts/routes');
-const deliveryRoutes  = require('./modules/deliveries/routes');
-const transferRoutes  = require('./modules/transfers/routes');
+const authRoutes        = require('./modules/auth/routes');
+const productRoutes     = require('./modules/products/routes');
+const warehouseRoutes   = require('./modules/warehouse/routes');
+const receiptRoutes     = require('./modules/receipts/routes');
+const deliveryRoutes    = require('./modules/deliveries/routes');
+const transferRoutes    = require('./modules/transfers/routes');
+const adjustmentRoutes  = require('./modules/adjustments/routes');
+const stockRoutes       = require('./modules/stock/routes');
+const dashboardRoutes   = require('./modules/dashboard/routes');
+const moveHistoryRoutes = require('./modules/dashboard/moveHistory.routes');
 
 const app = express();
 
@@ -25,12 +29,16 @@ app.use('/api/', rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20 });
 app.use((req, res, next) => { logger.info(`${req.method} ${req.originalUrl}`); next(); });
 
-app.use('/api/auth',       authLimiter, authRoutes);
-app.use('/api/products',   productRoutes);
-app.use('/api/warehouses', warehouseRoutes);
-app.use('/api/receipts',   receiptRoutes);
-app.use('/api/deliveries', deliveryRoutes);
-app.use('/api/transfers',  transferRoutes);
+app.use('/api/auth',         authLimiter, authRoutes);
+app.use('/api/products',     productRoutes);
+app.use('/api/warehouses',   warehouseRoutes);
+app.use('/api/receipts',     receiptRoutes);
+app.use('/api/deliveries',   deliveryRoutes);
+app.use('/api/transfers',    transferRoutes);
+app.use('/api/adjustments',  adjustmentRoutes);
+app.use('/api/stock',        stockRoutes);
+app.use('/api/dashboard',    dashboardRoutes);
+app.use('/api/move-history', moveHistoryRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 app.use((req, res) => res.status(404).json({ error: 'Route not found.' }));

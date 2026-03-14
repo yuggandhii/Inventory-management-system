@@ -19,6 +19,7 @@ import DeliveryDetailPage from './pages/DeliveryDetailPage';
 import StockPage from './pages/StockPage';
 import MoveHistoryPage from './pages/MoveHistoryPage';
 import ProductsPage from './pages/ProductsPage';
+import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/settings/SettingsPage';
 
 const queryClient = new QueryClient({
@@ -86,6 +87,7 @@ export default function App() {
             <Route path="/stock" element={<StockPage />} />
             <Route path="/move-history" element={<MoveHistoryPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
 
